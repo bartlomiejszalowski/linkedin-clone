@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
+import postRoutes from "./routes/post.route.js";
+
 import { connectDB } from "./lib/db.js";
 
 dotenv.config();
@@ -17,6 +19,7 @@ app.use(cookieParser()); // to accept cookies
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/posts", postRoutes);
 
 app.listen(PORT, () => {
   console.log("server running on port:", PORT);
