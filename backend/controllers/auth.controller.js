@@ -2,7 +2,6 @@ import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sendWelcomeEmail } from "../emails/emailHandlers.js";
-import { use } from "bcrypt/promises.js";
 
 export const signup = async (req, res) => {
   try {
