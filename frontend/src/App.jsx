@@ -4,7 +4,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
 import { Toaster } from "react-hot-toast";
-import useGetAuthUser from "./hooks/useGetAuthUser";
+import { useGetAuthUser } from "./hooks/useGetQueryActions";
 
 function App() {
   const { authUser, isLoading, error } = useGetAuthUser();
