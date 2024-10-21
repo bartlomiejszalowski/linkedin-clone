@@ -1,6 +1,6 @@
 import React from "react";
 
-const SignupInput = ({ type, placeholder, value, onChange, required }) => {
+const Input = ({ type, placeholder, value, onChange, required }) => {
   return (
     <input
       className="input input-border w-full"
@@ -13,4 +13,4 @@ const SignupInput = ({ type, placeholder, value, onChange, required }) => {
   );
 };
 
-export default SignupInput;
+export default Input;
