@@ -126,3 +126,22 @@ export const useSignUp = () => {
 
   return { signUpMutation, isLoading };
 };
+
+export const useLoginUser = () => {
+  const { queryClient } = useGetQueryClient();
+
+  const { mutate: loginUserMutation, isLoading } = useMutation({
+    mutationFn: async (data) => {
+      const res = await axiosInstance.post("/auth/login", data);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["authUser"]);
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message || "Something went wrong");
+    },
+  });
+
+  return { loginUserMutation, isLoading };
+};

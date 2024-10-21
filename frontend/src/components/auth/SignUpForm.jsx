@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SignupInput from "./SignupInput";
+import Input from "./Input";
 import { useMutation } from "@tanstack/react-query";
 import { axiosInstance } from "../../lib/axios";
 import { toast } from "react-hot-toast";
@@ -23,14 +23,14 @@ const SignUpForm = () => {
 
   return (
     <form onSubmit={handleSignUp} className="flex flex-col gap-4">
-      <SignupInput
+      <Input
         type="text"
         placeholder="Name"
         value={formFields.name}
         onChange={(e) => setFormFields({ ...formFields, name: e.target.value })}
         required={true}
       />
-      <SignupInput
+      <Input
         type="text"
         placeholder="Username"
         value={formFields.username}
@@ -39,7 +39,7 @@ const SignUpForm = () => {
         }
         required={true}
       />
-      <SignupInput
+      <Input
         type="text"
         placeholder="Email address"
         value={formFields.email}
@@ -48,7 +48,7 @@ const SignUpForm = () => {
         }
         required={true}
       />
-      <SignupInput
+      <Input
         type="password"
         placeholder="Password"
         value={formFields.password}
