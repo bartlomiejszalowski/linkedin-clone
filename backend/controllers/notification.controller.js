@@ -9,7 +9,7 @@ export const getUserNotifications = async (req, res) => {
       .populate("relatedUser", "name username profilePicture")
       .populate("relatedPost", "content image");
 
-    res.staus(200).json(notifications);
+    res.status(200).json(notifications);
   } catch (error) {
     console.log("Error in getUserNotifications controller:", error);
     res.status(500).json({ message: "Internal server error" });
