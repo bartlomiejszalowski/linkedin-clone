@@ -1,6 +1,7 @@
 import { sendConnectionAcceptedEmail } from "../emails/emailHandlers.js";
 import ConnectionRequest from "../models/connectionRequest.model.js";
 import User from "../models/user.model.js";
+import Notification from "../models/notification.model.js";
 export const sendConnectionRequest = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -111,7 +112,7 @@ export const acceptConnectionRequest = async (req, res) => {
   }
 };
 
-export const recjecttConnectionRequest = async (req, res) => {
+export const recjectConnectionRequest = async (req, res) => {
   try {
     const { requestId } = req.params;
     const userId = req.user._id;
@@ -196,28 +197,30 @@ export const getConnectionStatus = async (req, res) => {
     const currentUser = req.user;
 
     if (currentUser.connections.includes(targetUserId)) {
-      res.json({ status: "connected" });
+      return res.json({ status: "connected" });
     }
 
     const pendingRequest = await ConnectionRequest.findOne({
       $or: [
-        { sender: currentUserId, recipient: targetUserId },
-        { sender: targetUserId, recipient: currentUserId },
+        { sender: currentUserId, recipient: targetUserId }, // check if the current user has sent a request to the target user
+        { sender: targetUserId, recipient: currentUserId }, // check if the current user has received a request from the target user
       ],
       status: "pending",
     });
 
-    if (pendingRequest.sender.toString() === currentUserId.toString()) {
-      // check if the current user sent the request
-      res.json({ status: "pending" }); // the current user has sent a request to the target user
-    } else {
-      res.json({ status: "received", requestId: pendingRequest._id }); // the current user has received a request from the target user
+    if (pendingRequest) {
+      if (pendingRequest.sender.toString() === currentUserId.toString()) {
+        // check if the current user sent the request
+        return res.json({ status: "pending" }); // the current user has sent a request to the target user
+      } else {
+        return res.json({ status: "received", requestId: pendingRequest._id }); // the current user has received a request from the target user
+      }
     }
 
     //if no connection or pending request not found
-    res.json({ status: "not_connected" });
+    return res.json({ status: "not_connected" });
   } catch (error) {
     console.log("Error in getConnectionStatus controller:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

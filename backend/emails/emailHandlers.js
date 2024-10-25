@@ -17,7 +17,7 @@ export const sendWelcomeEmail = async (email, name, profileUrl) => {
       category: "Welcome",
     });
 
-    console.log("Welcome Email sent successfully");
+    console.log("Welcome Email sent successfully", response);
   } catch (error) {
     throw error;
   }
@@ -64,7 +64,7 @@ export const sendConnectionAcceptedEmail = async (
     const response = await mailtrapClient.send({
       from: sender,
       to: recipient,
-      subject: `${recipientName} accepted your connection`,
+      subject: `${recipientName} accepted your connection request`,
       html: createConnectionAcceptedEmailTemplate(
         senderName,
         recipientName,
@@ -72,5 +72,7 @@ export const sendConnectionAcceptedEmail = async (
       ),
       category: "connection_accepted",
     });
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };

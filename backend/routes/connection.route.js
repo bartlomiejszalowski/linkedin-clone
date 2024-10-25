@@ -5,7 +5,7 @@ import {
   getConnectionRequests,
   getConnectionStatus,
   getUserConnections,
-  recjecttConnectionRequest,
+  recjectConnectionRequest,
   removeConnection,
   sendConnectionRequest,
 } from "../controllers/connection.controller.js";
@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.post("/request/:userId", protectRoute, sendConnectionRequest);
 router.put("/accept/:requestId", protectRoute, acceptConnectionRequest);
-router.put("/recject/:requestId", protectRoute, recjecttConnectionRequest);
+router.put("/reject/:requestId", protectRoute, recjectConnectionRequest);
 
 //Get all connections requests for a user
 router.get("/requests", protectRoute, getConnectionRequests);

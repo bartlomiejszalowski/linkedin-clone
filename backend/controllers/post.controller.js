@@ -1,11 +1,12 @@
 import { sendCommentNotificationEmail } from "../emails/emailHandlers.js";
 import Notification from "../models/notification.model.js";
 import Post from "../models/post.model.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export const getFeedPosts = async (req, res) => {
   const posts = await Post.find({
     author: {
-      $in: req.user.connections, // only fetch posts where the author is in the user's connections
+      $in: [...req.user.connections, req.user._id], // only fetch posts where the author is in the user's connections
     },
   })
     .populate("author", "name username profilePicture headline") // populate the author with name, username, and profilePicture
@@ -28,7 +29,7 @@ export const createPost = async (req, res) => {
     let newPost;
 
     if (image) {
-      const imgResult = await cloudinaryConfig.uploader.upload(image);
+      const imgResult = await cloudinary.uploader.upload(image);
       newPost = new Post({
         author: req.user._id,
         content,
@@ -43,7 +44,10 @@ export const createPost = async (req, res) => {
 
     await newPost.save();
     res.status(201).json(newPost); // 201 - Created
-  } catch (error) {}
+  } catch (error) {
+    console.log("Error in createPost controller:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 export const deletePost = async (req, res) => {
@@ -64,7 +68,7 @@ export const deletePost = async (req, res) => {
 
     // Delete the image from Cloudinary
     if (post.image) {
-      await cloudinaryConfig.uploader.destroy(
+      await cloudinary.uploader.destroy(
         post.image.split("/").pop().split(".")[0]
         // extract the public_id from the image url
       );
@@ -114,7 +118,7 @@ export const createComment = async (req, res) => {
     }
 
     // create a notification if the comment owner is not the post owner
-    if (post.author.toString() !== req.user._id.toString()) {
+    if (post.author._id.toString() !== req.user._id.toString()) {
       const newNotification = new Notification({
         recipient: post.author,
         type: "comment",
@@ -144,7 +148,7 @@ export const createComment = async (req, res) => {
   }
 };
 
-export const likePost = async () => {
+export const likePost = async (req, res) => {
   try {
     const postId = req.params.id;
     const post = await Post.findById(postId);
