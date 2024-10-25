@@ -10,15 +10,15 @@ import NavbarItem from "./NavbarItem";
 
 const Navbar = () => {
   const { authUser } = useGetAuthUser();
-  const { notifications, isLoading, error } = useGetNotifications();
+  const { notifications } = useGetNotifications();
   const { connectionsRequests } = useGetConnectionsRequests();
   const { logoutUser } = useLogoutUser();
 
-  const unreadNotificationsCount = notifications?.data?.filter(
+  const unreadNotificationsCount = notifications?.filter(
     (notification) => !notification.read
   ).length;
 
-  const unreadConnectionRequestsCount = connectionsRequests?.data?.length;
+  const unreadConnectionRequestsCount = connectionsRequests?.length;
 
   return (
     <nav className="bg-secondary shadow-md sticky top-0 z-10">

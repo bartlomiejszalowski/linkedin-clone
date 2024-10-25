@@ -14,7 +14,7 @@ const SignUpForm = () => {
     password: "",
   });
 
-  const { signUpMutation, isLoading } = useSignUp();
+  const { signUpMutation, isPending } = useSignUp();
 
   const handleSignUp = (e) => {
     e.preventDefault();
@@ -59,10 +59,10 @@ const SignUpForm = () => {
       />
       <button
         type="submit"
-        diisabled={isLoading}
+        diisabled={isPending}
         className="btn btn-primary w-full text-white"
       >
-        {isLoading ? (
+        {isPending ? (
           <Loader className="size-5 animate-spin" />
         ) : (
           "Agree & Join"
