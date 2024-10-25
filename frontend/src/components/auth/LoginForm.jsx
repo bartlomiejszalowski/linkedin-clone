@@ -9,7 +9,7 @@ const LoginForm = () => {
     password: "",
   });
 
-  const { loginUserMutation, isLoading } = useLoginUser();
+  const { loginUserMutation, isPending } = useLoginUser();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,7 +38,7 @@ const LoginForm = () => {
       />
 
       <button type="submit" className="btn btn-primary w-full">
-        {isLoading ? <Loader className="size-5 animate-spin" /> : "Login"}
+        {isPending ? <Loader className="size-5 animate-spin" /> : "Login"}
       </button>
     </form>
   );
