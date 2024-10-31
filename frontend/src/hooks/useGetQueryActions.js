@@ -26,11 +26,7 @@ export const useGetAuthUser = () => {
 export const useGetNotifications = () => {
   const { authUser } = useGetAuthUser();
 
-  const {
-    data: notifications,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: notifications, isLoading } = useQuery({
     queryKey: ["notifications"],
     queryFn: async () => {
       try {
@@ -46,7 +42,7 @@ export const useGetNotifications = () => {
     enabled: !!authUser, // Only fetch notifications if authUser is available
   });
 
-  return { notifications, isLoading, error };
+  return { notifications, isLoading };
 };
 
 export const useGetConnectionsRequests = () => {
@@ -368,4 +364,43 @@ export const useRejectRequest = (userId) => {
   });
 
   return { rejectRequest, isPending };
+};
+
+export const useMarkAsRead = () => {
+  const queryClient = useQueryClient();
+  const { mutate: markAsRead, isPending } = useMutation({
+    mutationFn: async (notificationId) => {
+      const res = await axiosInstance.put(
+        `/notifications/${notificationId}/read`
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["notifications"]);
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message || "Something went wrong");
+    },
+  });
+
+  return { markAsRead, isPending };
+};
+
+export const useDeleteNotification = () => {
+  const queryClient = useQueryClient();
+  const { mutate: deleteNotification, isPending } = useMutation({
+    mutationFn: async (notificationId) => {
+      const res = await axiosInstance.delete(
+        `/notifications/${notificationId}`
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["notifications"]);
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message || "Something went wrong");
+    },
+  });
+  return { deleteNotification, isPending };
 };
