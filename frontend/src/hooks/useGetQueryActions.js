@@ -422,3 +422,48 @@ export const useGetConnections = () => {
   });
   return { connections, isLoading };
 };
+
+export const useGetPostById = (postId) => {
+  const queryClient = useQueryClient();
+  const {
+    data: post,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["post", postId],
+    queryFn: async () => {
+      // Timeout after 5 seconds if the request hangs
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+      try {
+        const res = await axiosInstance.get(`/posts/${postId}`, {
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        return res.data;
+      } catch (error) {
+        clearTimeout(timeoutId);
+        throw error; // Pass the error to isError
+      }
+    },
+    retry: false,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["post", postId]);
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Something went wrong");
+    },
+  });
+
+  console.log(
+    "Query states - isLoading:",
+    isLoading,
+    "isError:",
+    isError,
+    "post:",
+    post
+  );
+
+  return { post, isLoading, isError };
+};

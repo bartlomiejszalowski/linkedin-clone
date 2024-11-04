@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import { useGetAuthUser } from "./hooks/useGetQueryActions";
 import NotificationsPage from "./pages/NotificationsPage";
 import NetworkPage from "./pages/NetworkPage";
+import PostPage from "./pages/PostPage";
 
 function App() {
   const { authUser, isLoading, error } = useGetAuthUser();
@@ -37,6 +38,10 @@ function App() {
         <Route
           path="/network"
           element={authUser ? <NetworkPage /> : <Navigate to={"/"} />}
+        />
+        <Route
+          path="/post/:postId"
+          element={authUser ? <PostPage /> : <Navigate to={"/"} />}
         />
       </Routes>
       <Toaster />
