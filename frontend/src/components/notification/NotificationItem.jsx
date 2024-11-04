@@ -9,8 +9,6 @@ const NotificationItem = ({ Icon, content, notification }) => {
     return <NotificationRelatedPost relatedPost={relatedPost} />;
   };
 
-  console.log(notification);
-
   return (
     <div>
       <div className="flex items-center gap-2">
