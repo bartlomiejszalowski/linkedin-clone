@@ -404,3 +404,21 @@ export const useDeleteNotification = () => {
   });
   return { deleteNotification, isPending };
 };
+
+export const useGetConnections = () => {
+  const queryClient = useQueryClient();
+  const { data: connections, isLoading } = useQuery({
+    queryKey: ["connections"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/connections");
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["connections"]);
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message || "Something went wrong");
+    },
+  });
+  return { connections, isLoading };
+};
