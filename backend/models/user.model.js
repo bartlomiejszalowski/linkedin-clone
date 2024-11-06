@@ -32,6 +32,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "Linkedin User",
     },
+    location: {
+      type: String,
+      default: "Earth",
+    },
+    about: {
+      type: String,
+      default: "",
+    },
     skills: [String],
     experience: [
       {
