@@ -9,7 +9,7 @@ const PostAuthor = ({
 }) => {
   return (
     <div>
-      <Link to={`/profile/${authorUsername}}`}>
+      <Link to={`/profile/${authorUsername}`}>
         <h3 className="font-semibold">{authorName}</h3>
       </Link>
       <p className="text-xs text-info">{authorHeadline}</p>

@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
+import { da } from "date-fns/locale";
 
 export const useGetAuthUser = () => {
   const { data: authUser, isLoading } = useQuery({
@@ -290,16 +291,19 @@ export const useLikePost = (postId) => {
 };
 
 export const useGetConnectionStatus = (userId) => {
-  const { data: connectionStatus, isLoading } = useQuery({
+  const {
+    data: connectionStatus,
+    isLoading,
+    refetch: refetchConnectionStatus,
+  } = useQuery({
     queryKey: ["connectionStatus", userId],
     queryFn: async () => {
       const res = await axiosInstance.get(`/connections/status/${userId}`);
-      console.log(userId, res.data);
       return res.data;
     },
   });
 
-  return { connectionStatus, isLoading };
+  return { connectionStatus, isLoading, refetchConnectionStatus };
 };
 
 export const useSendConnectionRequest = () => {
@@ -456,14 +460,62 @@ export const useGetPostById = (postId) => {
     },
   });
 
-  console.log(
-    "Query states - isLoading:",
-    isLoading,
-    "isError:",
-    isError,
-    "post:",
-    post
-  );
-
   return { post, isLoading, isError };
+};
+
+export const useGetProfileByUsername = (username) => {
+  const queryClient = useQueryClient();
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ["userProfile", username],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/users/${username}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userProfile", username]);
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message || "Something went wrong");
+    },
+  });
+  return { profile, isLoading };
+};
+
+export const useUpdateProfile = () => {
+  const queryClient = useQueryClient();
+  const { mutate: updateProfile, isPending } = useMutation({
+    mutationFn: async (updatedProfileData) => {
+      const res = await axiosInstance.put("/users/profile", updatedProfileData);
+      return res.data;
+    },
+    onSuccess: () => {
+      toast.success("Profile updated successfully");
+      queryClient.invalidateQueries(["authUser"]);
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message || "Something went wrong");
+    },
+  });
+  return { updateProfile, isPending };
+};
+
+export const removeConnection = (refetchFn) => {
+  const queryClient = useQueryClient();
+  const { mutate: removeConnection, isPending } = useMutation({
+    mutationFn: async (data) => {
+      const res = await axiosInstance.delete(
+        `/connections/${data.connectionId}`
+      );
+      return res.data;
+    },
+    onSuccess: (data) => {
+      toast.success("Connection removed successfully");
+      data.refetchFn();
+      queryClient.invalidateQueries(["connections"]);
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message || "Something went wrong");
+    },
+  });
+  return { removeConnection, isPending };
 };
