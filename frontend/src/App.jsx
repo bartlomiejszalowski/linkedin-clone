@@ -8,9 +8,10 @@ import { useGetAuthUser } from "./hooks/useGetQueryActions";
 import NotificationsPage from "./pages/NotificationsPage";
 import NetworkPage from "./pages/NetworkPage";
 import PostPage from "./pages/PostPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
-  const { authUser, isLoading, error } = useGetAuthUser();
+  const { authUser, isLoading } = useGetAuthUser();
 
   if (isLoading) {
     return null;
@@ -42,6 +43,10 @@ function App() {
         <Route
           path="/post/:postId"
           element={authUser ? <PostPage /> : <Navigate to={"/"} />}
+        />
+        <Route
+          path="/profile/:username"
+          element={authUser ? <ProfilePage /> : <Navigate to={"/"} />}
         />
       </Routes>
       <Toaster />
