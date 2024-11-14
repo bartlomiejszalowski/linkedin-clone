@@ -1,14 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
-import ExperienceInput from "../ui/EditProfileInput";
-import ExperienceButton from "../ui/EditProfileButton";
 import ExperienceCheckbox from "../ui/ExperienceCheckbox";
-import ExperienceItem from "../ui/ProfileItem";
 import ExperienceTextarea from "../ui/ExperienceTextarea";
 import { useUpdateProfile } from "../../../hooks/useGetQueryActions";
 import EditProfileInput from "../ui/EditProfileInput";
 import EditProfileButton from "../ui/EditProfileButton";
 import ProfileItem from "../ui/ProfileItem";
+import { formatDate } from "../../../utils/formatDate";
 
 const ExperienceSection = ({ userData, isOwnProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -78,10 +76,15 @@ const ExperienceSection = ({ userData, isOwnProfile }) => {
       {experience.map((exp) => (
         <ProfileItem
           key={exp._id}
-          experience={exp}
+          name={exp.title}
+          place={exp.company}
+          description={exp.description}
           handleClick={() => handleDeleteExperience(exp._id)}
           isEditing={isEditing}
-        />
+        >
+          {formatDate(exp.startDate)} -{" "}
+          {exp.endDate ? formatDate(exp.endDate) : "Present"}
+        </ProfileItem>
       ))}
 
       {isEditing && (

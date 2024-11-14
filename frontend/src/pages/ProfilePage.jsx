@@ -29,7 +29,7 @@ const ProfilePage = () => {
       <AboutSection userData={userData} isOwnProfile={isOwnProfile} />
       <ExperienceSection userData={userData} isOwnProfile={isOwnProfile} />
       <EducationSection userData={userData} isOwnProfile={isOwnProfile} />
-      <SkillsSection />
+      <SkillsSection userData={userData} isOwnProfile={isOwnProfile} />
     </div>
   );
 };

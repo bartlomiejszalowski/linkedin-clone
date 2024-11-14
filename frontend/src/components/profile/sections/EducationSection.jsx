@@ -1,6 +1,9 @@
 import { useState } from "react";
 import EditProfileInput from "../ui/EditProfileInput";
 import EditProfileButton from "../ui/EditProfileButton";
+import ProfileItem from "../ui/ProfileItem";
+import { useUpdateProfile } from "../../../hooks/useGetQueryActions";
+import { v4 as uuidv4 } from "uuid";
 
 const EducationSection = ({ userData, isOwnProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -12,36 +15,54 @@ const EducationSection = ({ userData, isOwnProfile }) => {
     endYear: "",
   });
 
-  const handleAddEducation = () => {};
-  const handleDeleteEducation = () => {};
-  const handleSave = () => {};
+  const { updateProfile } = useUpdateProfile();
+
+  const handleAddEducation = () => {
+    const educationWithTempId = { ...newEducation, _id: `temp-${uuidv4()}` };
+    if (
+      newEducation.school &&
+      newEducation.fieldOfStudy &&
+      newEducation.startYear &&
+      newEducation.endYear
+    ) {
+      setEducation([...education, educationWithTempId]);
+      setNewEducation({
+        school: "",
+        fieldOfStudy: "",
+        startYear: "",
+        endYear: "",
+      });
+    }
+  };
+
+  const handleDeleteEducation = (id) => {
+    setEducation(education.filter((edu) => edu._id !== id));
+  };
+  const handleSave = () => {
+    const educationToSave = education.map((edu) => {
+      // Remove the temporary ID
+      if (edu._id && edu._id.startsWith("temp-")) {
+        const { _id, ...rest } = edu;
+        return rest;
+      }
+      return edu;
+    });
+    updateProfile({ education: educationToSave });
+    setIsEditing(false);
+  };
 
   return (
     <div className="bg-white shadow rounded-lg p-6 mb-6">
       <h2 className="text-xl font-semibold mb-4">Education</h2>
-      {/* {education.map((edu) => (
-        <div key={edu._id} className="mb-4 flex justify-between items-start">
-          <div className="flex items-start">
-            <School size={20} className="mr-2 mt-1" />
-            <div>
-              <h3 className="font-semibold">{edu.fieldOfStudy}</h3>
-              <p className="text-gray-600">{edu.school}</p>
-              <p className="text-gray-500 text-sm">
-                {edu.startYear} - {edu.endYear || "Present"}
-              </p>
-            </div>
-          </div>
-          {isEditing && (
-            <button
-              onClick={() => handleDeleteEducation(edu._id)}
-              className="text-red-500"
-            >
-              <X size={20} />
-            </button>
-          )}
-        </div>
-      ))} */}
-      //implement here ProfileItem.jsx
+      {education.map((edu) => (
+        <ProfileItem
+          key={edu._id}
+          handleClick={() => handleDeleteEducation(edu._id)}
+          name={edu.fieldOfStudy}
+          place={edu.school}
+          isEditing={isEditing}
+        />
+      ))}
       {isEditing && (
         <div className="mt-4">
           <EditProfileInput
