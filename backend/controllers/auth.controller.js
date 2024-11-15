@@ -85,6 +85,11 @@ export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     // Check if user exists
     const user = await User.findOne({ username });
     if (!user) {
