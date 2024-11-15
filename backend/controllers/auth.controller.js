@@ -2,14 +2,19 @@ import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sendWelcomeEmail } from "../emails/emailHandlers.js";
+import { validationResult } from "express-validator";
 
 export const signup = async (req, res) => {
   try {
     const { name, username, email, password } = req.body;
     const existingEmail = await User.findOne({ email });
 
-    if (!name || !username || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
+    // if (!name || !username || !email || !password) {
+    //   return res.status(400).json({ message: "All fields are required" });
+    // }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
     if (existingEmail) {

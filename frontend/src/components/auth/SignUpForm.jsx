@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import Input from "./Input";
-import { useMutation } from "@tanstack/react-query";
-import { axiosInstance } from "../../lib/axios";
-import { toast } from "react-hot-toast";
-import { Loader } from "lucide-react";
+import { useState } from "react";
 import { useSignUp } from "../../hooks/useGetQueryActions";
+import { Loader } from "lucide-react";
+import Input from "./Input";
+import { useSignUpFormValidation } from "../../hooks/useValidation";
 
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState({
@@ -12,13 +10,22 @@ const SignUpForm = () => {
     email: "",
     username: "",
     password: "",
+    confirmPassword: "",
   });
 
   const { signUpMutation, isPending } = useSignUp();
+  const { formErrors, validateForm } = useSignUpFormValidation();
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    signUpMutation(formFields);
+
+    const isFormValid = await validateForm(formFields);
+
+    if (isFormValid) {
+      signUpMutation(formFields);
+    }
+
+    return;
   };
 
   return (
@@ -30,6 +37,8 @@ const SignUpForm = () => {
         onChange={(e) => setFormFields({ ...formFields, name: e.target.value })}
         required={true}
       />
+      {formErrors.name && <p className="text-red-500">{formErrors.name}</p>}
+
       <Input
         type="text"
         placeholder="Username"
@@ -39,6 +48,10 @@ const SignUpForm = () => {
         }
         required={true}
       />
+      {formErrors.username && (
+        <p className="text-red-500">{formErrors.username}</p>
+      )}
+
       <Input
         type="text"
         placeholder="Email address"
@@ -48,6 +61,8 @@ const SignUpForm = () => {
         }
         required={true}
       />
+      {formErrors.email && <p className="text-red-500">{formErrors.email}</p>}
+
       <Input
         type="password"
         placeholder="Password"
@@ -57,9 +72,27 @@ const SignUpForm = () => {
         }
         required={true}
       />
+      {formErrors.password && (
+        <p className="text-red-500">{formErrors.password}</p>
+      )}
+
+      <Input
+        type="password"
+        placeholder="Confirm Password"
+        value={formFields.confirmPassword}
+        onChange={(e) =>
+          setFormFields({ ...formFields, confirmPassword: e.target.value })
+        }
+        required={true}
+      />
+
+      {formErrors.confirmPassword && (
+        <p className="text-red-500">{formErrors.confirmPassword}</p>
+      )}
+
       <button
         type="submit"
-        diisabled={isPending}
+        disabled={isPending}
         className="btn btn-primary w-full text-white"
       >
         {isPending ? (

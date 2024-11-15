@@ -113,7 +113,16 @@ export const useSignUp = () => {
       queryClient.invalidateQueries(["authUser"]);
     },
     onError: (error) => {
-      toast.error(error.response.data.message || "Something went wrong");
+      const errors = error.response?.data?.errors;
+
+      if (Array.isArray(errors)) {
+        errors.forEach((err) => {
+          toast.error(err.msg || "Something went wrong");
+        });
+      } else {
+        // Fallback if no specific errors are returned
+        toast.error("Something went wrong");
+      }
     },
   });
 
