@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SkillIteam from "../ui/SkillIteam";
 import { useUpdateProfile } from "../../../hooks/useGetQueryActions";
+import EditProfileButton from "../ui/EditProfileButton";
 
 const SkillsSection = ({ userData, isOwnProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -63,12 +64,19 @@ const SkillsSection = ({ userData, isOwnProfile }) => {
       {isOwnProfile && (
         <>
           {isEditing ? (
-            <button
-              onClick={handleSave}
-              className="mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300"
-            >
-              Save Changes
-            </button>
+            <div className="flex mt-2 gap-4  justify-between ">
+              <button
+                onClick={handleSave}
+                className="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition duration-300"
+              >
+                Save Changes
+              </button>
+              <EditProfileButton
+                handleClick={() => setIsEditing(false)}
+                label="Cancel"
+                isRed
+              />
+            </div>
           ) : (
             <button
               onClick={() => setIsEditing(true)}
