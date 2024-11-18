@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useUpdateProfile } from "../../../hooks/useGetQueryActions";
+import EditProfileButton from "../ui/EditProfileButton";
 
 const AboutSection = ({ userData, isOwnProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -9,7 +10,7 @@ const AboutSection = ({ userData, isOwnProfile }) => {
 
   const handleSave = () => {
     setIsEditing(false);
-    updateProfile({ about });
+    updateProfile({ about: about });
   };
 
   return (
@@ -25,13 +26,20 @@ const AboutSection = ({ userData, isOwnProfile }) => {
                 className="w-full p-2 border rounded"
                 rows="4"
               />
-              <button
-                onClick={handleSave}
-                className="mt-2 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark 
+              <div className="flex mt-2 gap-4  justify-between ">
+                <button
+                  onClick={handleSave}
+                  className="mt-2 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark 
 								transition duration-300"
-              >
-                Save
-              </button>
+                >
+                  Save
+                </button>
+                <EditProfileButton
+                  handleClick={() => setIsEditing(false)}
+                  label="Cancel"
+                  isRed
+                />
+              </div>
             </>
           ) : (
             <>

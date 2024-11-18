@@ -29,12 +29,6 @@ export const useSignUpFormValidation = () => {
       errors.email = "Please enter a valid email address";
     }
 
-    //one digit
-    //one special character
-    //at least 8 characters
-    // at least one lowercase letter
-    // at least one uppercase letter
-
     // Password validation (minimum length check, at least one lowercase letter, at least one uppercase letter, one digit, and one special character)
     if (!formFields.password || formFields.password.length < 8) {
       errors.password = "Password must be at least 8 characters long";
@@ -74,16 +68,19 @@ export const useSignInFormValidation = () => {
     }
 
     // Password validation (minimum length check, at least one lowercase letter, at least one uppercase letter, one digit, and one special character)
+    const passwordErrorMessage =
+      "Password does not meet all the required criteria.";
+
     if (!formFields.password || formFields.password.length < 8) {
-      errors.password = "Password must be at least 8 characters long";
+      errors.password = passwordErrorMessage;
     } else if (!/[a-z]/.test(formFields.password)) {
-      errors.password = "Password must contain at least one lowercase letter";
+      errors.password = passwordErrorMessage;
     } else if (!/[A-Z]/.test(formFields.password)) {
-      errors.password = "Password must contain at least one uppercase letter";
+      errors.password = passwordErrorMessage;
     } else if (!/\d/.test(formFields.password)) {
-      errors.password = "Password must contain at least one digit";
+      errors.password = passwordErrorMessage;
     } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formFields.password)) {
-      errors.password = "Password must contain at least one special character";
+      errors.password = passwordErrorMessage;
     }
 
     setFormErrors(errors);

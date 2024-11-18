@@ -107,7 +107,17 @@ const EducationSection = ({ userData, isOwnProfile }) => {
       {isOwnProfile && (
         <>
           {isEditing ? (
-            <EditProfileButton handleClick={handleSave} label="Save Changes" />
+            <div className="flex mt-2 gap-4  justify-between">
+              <EditProfileButton
+                handleClick={handleSave}
+                label="Save Changes"
+              />
+              <EditProfileButton
+                handleClick={() => setIsEditing(false)}
+                label="Cancel"
+                isRed
+              />
+            </div>
           ) : (
             <EditProfileButton
               handleClick={() => setIsEditing(true)}

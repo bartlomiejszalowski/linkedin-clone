@@ -147,16 +147,18 @@ const ExperienceSection = ({ userData, isOwnProfile }) => {
       {isOwnProfile && (
         <>
           {isEditing ? (
-            <EditProfileButton
-              handleClick={handleSave}
-              label="Save"
-              className="mt-4"
-            />
+            <div className="flex mt-2 gap-4  justify-between">
+              <EditProfileButton handleClick={handleSave} label="Save" />
+              <EditProfileButton
+                handleClick={() => setIsEditing(false)}
+                label="Cancel"
+                isRed
+              />
+            </div>
           ) : (
             <EditProfileButton
               handleClick={() => setIsEditing(true)}
               label="Edit Experiences"
-              className="mt-4"
             />
           )}
         </>

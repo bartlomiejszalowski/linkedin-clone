@@ -17,10 +17,13 @@ import { renderConnectionButton } from "../../../utils/renderConnectionButton";
 const ProfileHeader = ({ userData, isOwnProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({});
+
   const { updateProfile } = useUpdateProfile();
   const { sendConnectionRequest } = useSendConnectionRequest();
   const { acceptRequest } = useAcceptRequest();
   const { rejectRequest } = useRejectRequest();
+
+  console.log(userData);
 
   const { connectionStatus, isLoading, refetchConnectionStatus } =
     useGetConnectionStatus(userData._id);
