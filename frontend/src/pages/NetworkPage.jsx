@@ -1,6 +1,6 @@
 import FriendRequest from "../components/network/FriendRequest";
 import NoConnectionsFound from "../components/network/NoConnectionsFound";
-import UserCard from "../components/network/Usercard";
+import UserCard from "../components/network/UserCard";
 import Sidebar from "../components/sidebar/Sidebar";
 
 import {
