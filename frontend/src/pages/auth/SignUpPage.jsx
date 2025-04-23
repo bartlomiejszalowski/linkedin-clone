@@ -3,8 +3,8 @@ import SignUpForm from "../../components/auth/SignUpForm";
 
 const SignUpPage = () => {
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12  sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="overflow-hidden flex flex-col justify-center py-8  sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md justify-center items-center flex flex-col">
         <img className="mx-auto h-36 w-auto" src="/logo.svg" alt="LinkedIn" />
         <h2>Make the most of your proffesional life</h2>
       </div>

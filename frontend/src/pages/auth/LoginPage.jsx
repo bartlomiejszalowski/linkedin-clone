@@ -3,7 +3,7 @@ import LoginForm from "../../components/auth/LoginForm";
 
 const LoginPage = () => {
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className=" overflow-hidden flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <img className="mx-auto h-40 w-auto" src="/logo.svg" alt="LinkedIn" />
         <h2 className=" text-center text-3xl font-extrabold text-gray-900">

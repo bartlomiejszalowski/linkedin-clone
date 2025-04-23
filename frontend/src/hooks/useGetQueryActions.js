@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
-import { da } from "date-fns/locale";
 
 export const useGetAuthUser = () => {
   const { data: authUser, isLoading } = useQuery({
