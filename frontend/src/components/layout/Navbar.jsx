@@ -14,6 +14,8 @@ const Navbar = () => {
   const { connectionsRequests } = useGetConnectionsRequests();
   const { logoutUser } = useLogoutUser();
 
+  if (!notifications) return null;
+
   const unreadNotificationsCount = notifications?.filter(
     (notification) => !notification.read
   ).length;

@@ -106,9 +106,9 @@ const ProfileHeader = ({ userData, isOwnProfile }) => {
           <div className="flex justify-center">
             {renderConnectionButton(
               connectionStatus?.status,
-              sendConnectionRequest,
-              acceptRequest,
-              rejectRequest,
+              () => sendConnectionRequest(userData._id),
+              () => acceptRequest(connectionStatus?.requestId),
+              () => rejectRequest(connectionStatus?.requestId),
               handleRemove
             )}
           </div>
