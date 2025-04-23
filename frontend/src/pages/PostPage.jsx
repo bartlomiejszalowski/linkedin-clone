@@ -8,8 +8,6 @@ const PostPage = () => {
   const { authUser } = useGetAuthUser();
   const { post, isLoading, isError } = useGetPostById(postId);
 
-  console.log("Component states - isLoading:", isLoading, "post:", post);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

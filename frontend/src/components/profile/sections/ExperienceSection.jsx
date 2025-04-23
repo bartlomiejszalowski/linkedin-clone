@@ -43,7 +43,6 @@ const ExperienceSection = ({ userData, isOwnProfile }) => {
   };
 
   const handleDeleteExperience = (id) => {
-    console.log(id, "ID");
     setExperience(experience.filter((exp) => exp._id !== id));
   };
 

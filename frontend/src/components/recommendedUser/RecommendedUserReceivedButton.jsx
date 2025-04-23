@@ -12,8 +12,6 @@ const RecommendedUserReceivedButton = ({
   let acceptBg = "bg-green-500 hover:bg-green-600";
   let rejectBg = "bg-red-500 hover:bg-red-600";
 
-  console.log("CONNECTION ID", connectionId);
-
   const { acceptRequest } = useAcceptRequest(recommendedUserId);
   const { rejectRequest } = useRejectRequest(recommendedUserId);
 

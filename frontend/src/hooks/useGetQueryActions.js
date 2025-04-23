@@ -497,7 +497,6 @@ export const useUpdateProfile = () => {
       return res.data;
     },
     onSuccess: () => {
-      console.log("hello");
       toast.success("Profile updated successfully");
       queryClient.invalidateQueries(["authUser"]);
     },

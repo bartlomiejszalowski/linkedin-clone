@@ -8,8 +8,6 @@ export const renderConnectionButton = (
   handleReject,
   handleRemove
 ) => {
-  console.log(connectionStatus);
-
   switch (connectionStatus) {
     case "connected":
       return (

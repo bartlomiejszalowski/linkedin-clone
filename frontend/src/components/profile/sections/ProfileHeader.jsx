@@ -23,8 +23,6 @@ const ProfileHeader = ({ userData, isOwnProfile }) => {
   const { acceptRequest } = useAcceptRequest();
   const { rejectRequest } = useRejectRequest();
 
-  console.log(userData);
-
   const { connectionStatus, isLoading, refetchConnectionStatus } =
     useGetConnectionStatus(userData._id);
 
@@ -48,7 +46,7 @@ const ProfileHeader = ({ userData, isOwnProfile }) => {
   };
 
   const handleRemove = () => {
-    console.log("remove");
+    return;
   };
 
   return (
